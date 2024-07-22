@@ -7,7 +7,7 @@ function Player::cycleCardSelect(%this, %dir) {
 
 	%lastCard = %this.currentCard + 0;
 	%this.currentCard = (%this.currentCard + %dir + %deck.numCards) % %deck.numCards;
- 	
+
 	if (isObject(%this.card[%lastCard])) {
 		%this.card[%lastCard].playThread(0, root);
 	}

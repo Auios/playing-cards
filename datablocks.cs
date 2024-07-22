@@ -1,49 +1,49 @@
 datablock AudioProfile(cardPick1Sound){
-   filename    = "./sounds/pick1.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/pick1.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 datablock AudioProfile(cardPick2Sound){
-   filename    = "./sounds/pick2.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/pick2.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 datablock AudioProfile(cardPick3Sound){
-   filename    = "./sounds/pick3.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/pick3.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 datablock AudioProfile(cardPick4Sound){
-   filename    = "./sounds/pick4.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/pick4.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 datablock AudioProfile(cardPlace1Sound){
-   filename    = "./sounds/place1.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/place1.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 datablock AudioProfile(cardPlace2Sound){
-   filename    = "./sounds/place2.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/place2.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 datablock AudioProfile(cardPlace3Sound){
-   filename    = "./sounds/place3.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/place3.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 datablock AudioProfile(cardPlace4Sound){
-   filename    = "./sounds/place4.wav";
-   description = AudioClose3d;
-   preload = true;
+  filename    = "./sounds/place4.wav";
+  description = AudioClose3d;
+  preload = true;
 };
 
 
