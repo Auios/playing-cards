@@ -1,5 +1,13 @@
-$MinimumScore = 50;
+$MinimumScore = 10;
 $FreeScoreTimeout = 120000;
+
+function cardsMsgClient(%client, %code, %message) {
+	if(%code==0 && getTaggedString(%code) !$= "") {
+		messageClient(%client, %code, %message);
+	} else {
+		%client.centerPrint(%message, 5);
+	}
+}
 
 package MinScore {
 	function GameConnection::spawnPlayer(%cl) {
@@ -7,10 +15,8 @@ package MinScore {
 
 		if (%cl.score <= 0 && getSimTime() - %cl.lastReceivedPoints > $FreeScoreTimeout) {
 			%cl.score = $MinimumScore;
-			messageClient(%cl, '', "\c2You received " @ $MinimumScore @ " free points for being broke (2 minute cooldown)");
+			cardsMsgClient(%cl, '', "\c2You received " @ $MinimumScore @ " free points for being broke (2 minute cooldown)");
 			%cl.lastReceivedPoints = getSimTime();
-		} else if (%cl.score <= 0) {
-			messageClient(%cl, '', "\c2You need to wait " @ ($freescoretimeout - getSimTime() - %cl.lastReceivedPoints) @ " for your next set of free points!");
 		}
 
 		return %ret;
@@ -165,17 +171,17 @@ function queueGetID(%queueID, %val) {
 
 function serverCmdJoinBlackjackQueue(%cl) {
 	if (queueContains("BlackjackQueue", %cl.bl_id TAB %cl.name)) {
-		messageClient(%cl, '', "You already are in the queue!");
+		cardsMsgClient(%cl, '', "You already are in the queue!");
 		return;
 	}
 
 	queuePush("BlackjackQueue", %cl.bl_id TAB %cl.name);
-	messageClient(%cl, '', "\c2You joined the Blackjack queue. Use /listBlackjackQueue to view the queue.");
+	cardsMsgClient(%cl, '', "\c2You joined the Blackjack queue. Use /listBlackjackQueue to view the queue.");
 }
 
 function serverCmdListBlackjackQueue(%cl) {
 	%queueID = "BlackjackQueue";
-	messageClient(%cl, '', "\c7- Blackjack Queue -");
+	cardsMsgClient(%cl, '', "\c7- Blackjack Queue -");
 	for (%i = $Queue[%queueID @ "_popIDX"] + 0; %i < $Queue[%queueID @ "_pushIDX"]; %i++) {
 		%data = $Queue[%queueID @ "_val" @ %i];
 		%client = findClientByBL_ID(getWord(%data, 0));
@@ -184,18 +190,18 @@ function serverCmdListBlackjackQueue(%cl) {
 		if (!isObject(%client)) {
 			%name = %name SPC "(LEFT SERVER)";
 		}
-		messageClient(%cl, '', "\c2" @ (%i + 1 - $Queue[%queueID @ "_popIDX"]) @ ". " @ %name);
+		cardsMsgClient(%cl, '', "\c2" @ (%i + 1 - $Queue[%queueID @ "_popIDX"]) @ ". " @ %name);
 	}
 }
 
 function serverCmdLeaveBlackjackQueue(%cl) {
 	if (!queueContains("BlackjackQueue", %cl.bl_id TAB %cl.name)) {
-		messageClient(%cl, '', "You are not in the queue!");
+		cardsMsgClient(%cl, '', "You are not in the queue!");
 		return;
 	}
 
 	queueRemoveID("BlackjackQueue", queueGetID("BlackjackQueue", %cl.bl_id TAB %cl.name));
-	messageClient(%cl, '', "You left the Blackjack queue.");
+	cardsMsgClient(%cl, '', "You left the Blackjack queue.");
 }
 
 function serverCmdPopBlackjackQueue(%cl) {
@@ -211,7 +217,7 @@ function serverCmdPopBlackjackQueue(%cl) {
 	}
 
 	if (isObject(%targ)) {
-		messageClient(%cl, '', "\c3" @ %targ.name @ " has been added to the blackjack table!");
+		cardsMsgClient(%cl, '', "\c3" @ %targ.name @ " has been added to the blackjack table!");
 
 		if (isObject(%targ.player)) {
 			%targ.player.delete();
@@ -225,7 +231,7 @@ function serverCmdPopBlackjackQueue(%cl) {
 			%targ.createPlayer(%cl.getControlObject().getTransform());
 		}
 	} else {
-		messageClient(%cl, '', "Nobody found in queue...");
+		cardsMsgClient(%cl, '', "Nobody found in queue...");
 	}
 }
 
@@ -243,7 +249,7 @@ function Player::removeItemDB(%pl, %db) {
 		if (%pl.tool[%i].getID() == %db.getID()) {
 			%pl.tool[%i] = 0;
 			if (isObject(%cl)) {
-				messageClient(%cl, 'MsgItemPickup', "", %i, 0, 1);
+				cardsMsgClient(%cl, 'MsgItemPickup', "", %i, 0, 1);
 
 				if (%pl.currTool == %i) {
 					serverCmdUnuseTool(%cl);
@@ -261,7 +267,7 @@ function Player::addItem(%this, %item) {
 		if (%tool == 0) {
 			%this.tool[%i] = %item.getID();
 			%this.weaponCount++;
-			messageClient(%cl, 'MsgItemPickup', '', %i, %item.getID());
+			cardsMsgClient(%cl, 'MsgItemPickup', '', %i, %item.getID());
 			break;
 		}
 	}

@@ -90,18 +90,17 @@ function bottomprintChipInfo(%pl) {
 }
 
 function serverCmdCardsHelp(%cl) {
-	messageClient(%cl, '', "\c3/clearAllCards \c6- Removes all placed cards");
-	messageClient(%cl, '', "\c3/clearAllCardData \c6- Removes all placed cards and any held cards");
-	messageClient(%cl, '', "\c3/clearAllPlacedChips \c6- Removes all placed chips");
-	messageClient(%cl, '', "\c3/bet # \c6- Prepares a bet, rounded down");
-	messageClient(%cl, '', "\c3/addToChips # \c6- Prepares a payout, rounded down, adds to the chip set you click");
-	messageClient(%cl, '', "\c7            Automatically returns it to the owner's pile");
-	messageClient(%cl, '', "\c3/multiplyChips # \c6- Prepares a multiplier payout, adds to the chip set you click");
-	messageClient(%cl, '', "\c7            Automatically returns it to the owner's pile, 0 is a valid number");
-	messageClient(%cl, '', "\c3/toggleChipPickup [name] \c6- Toggles if chips can be picked up");
-	messageClient(%cl, '', "\c7            Include a name to only toggle for one person, none to toggle everyone");
-	messageClient(%cl, '', "\c3/mergeChips # \c6- Turns on chip merging using the chip item, default radius is 1 stud");
-	messageClient(%cl, '', "\c7            Include a number to set a radius (ie, merge all chips on a table)");
+	cardsMsgClient(%cl, '', "\c3/clearAllCards \c6- Removes all placed cards");
+	cardsMsgClient(%cl, '', "\c3/clearAllCardData \c6- Removes all placed cards and any held cards");
+	cardsMsgClient(%cl, '', "\c3/bet # \c6- Prepares a bet, rounded down");
+	cardsMsgClient(%cl, '', "\c3/addToChips # \c6- Prepares a payout, rounded down, adds to the chip set you click");
+	cardsMsgClient(%cl, '', "\c7            Automatically returns it to the owner's pile");
+	cardsMsgClient(%cl, '', "\c3/multiplyChips # \c6- Prepares a multiplier payout, adds to the chip set you click");
+	cardsMsgClient(%cl, '', "\c7            Automatically returns it to the owner's pile, 0 is a valid number");
+	cardsMsgClient(%cl, '', "\c3/toggleChipPickup [name] \c6- Toggles if chips can be picked up");
+	cardsMsgClient(%cl, '', "\c7            Include a name to only toggle for one person, none to toggle everyone");
+	cardsMsgClient(%cl, '', "\c3/mergeChips # \c6- Turns on chip merging using the chip item, default radius is 1 stud");
+	cardsMsgClient(%cl, '', "\c7            Include a number to set a radius (ie, merge all chips on a table)");
 }
 
 function serverCmdCardHelp(%cl) {
@@ -109,11 +108,11 @@ function serverCmdCardHelp(%cl) {
 }
 
 function serverCmdQueueHelp(%cl) {
-	messageClient(%cl, '', "\c3/JoinBlackjackQueue \c6- Joins the Blackjack queue");
-	messageClient(%cl, '', "\c3/LeaveBlackjackQueue \c6- Leaves the Blackjack queue");
-	messageClient(%cl, '', "\c3/ListBlackjackQueue \c6- Lists everyone in the Blackjack Queue");
-	messageClient(%cl, '', "\c3/LeaveGame \c6- Respawns you (aka exit the current game, if you are in one)");
-	messageClient(%cl, '', "\c3/PopBlackjackQueue \c6- Spawns the next person in the queue at the blackjack spawn");
-	messageClient(%cl, '', "\c7            If it cannot find the blackjack spawn, it uses your player.");
-	messageClient(%cl, '', "\c7            Spawned players have no card item, but have the chip item.");
+	cardsMsgClient(%cl, '', "\c3/JoinBlackjackQueue \c6- Joins the Blackjack queue");
+	cardsMsgClient(%cl, '', "\c3/LeaveBlackjackQueue \c6- Leaves the Blackjack queue");
+	cardsMsgClient(%cl, '', "\c3/ListBlackjackQueue \c6- Lists everyone in the Blackjack Queue");
+	cardsMsgClient(%cl, '', "\c3/LeaveGame \c6- Respawns you (aka exit the current game, if you are in one)");
+	cardsMsgClient(%cl, '', "\c3/PopBlackjackQueue \c6- Spawns the next person in the queue at the blackjack spawn");
+	cardsMsgClient(%cl, '', "\c7            If it cannot find the blackjack spawn, it uses your player.");
+	cardsMsgClient(%cl, '', "\c7            Spawned players have no card item, but have the chip item.");
 }

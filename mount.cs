@@ -54,7 +54,7 @@ function Player::addCard(%this, %card) {
 		%this.deck.addCard(%card);
 
 		if (isObject(%cl)) {
-			messageClient(%this.client, '', "\c6You picked up a " @ getLongCardName(%card));
+			//cardsMsgClient(%this.client, '', "\c6You picked up a " @ getLongCardName(%card));
 		}
 	}
 }

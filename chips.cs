@@ -151,10 +151,10 @@ function fxDTSBrick::toggleChipDisplay(%b, %cl) {
 	if (%b.currentDisplayClient == %cl) {
 		%b.clearChips(%cl);
 	} else if (%b.isDisplayingChips) {
-		messageClient(%cl, '', "This chip display is in use!");
+		cardsMsgClient(%cl, '', "This chip display is in use!");
 		return;
 	} else if (%cl.score <= 0) {
-		messageClient(%cl, '', "You don't have any points to display!");
+		cardsMsgClient(%cl, '', "You don't have any points to display!");
 		return;
 	} else if (isObject(%cl.player.chipDisplayBrick)) {
 		%cl.player.chipDisplayBrick.clearChips(%cl);
@@ -294,8 +294,8 @@ function addToChips(%chip, %value, %cl) {
 		%cl.player.placeChips(%value, %loc);
 	} else {
 		%so.score += %value;
-		messageClient(%cl, '', "\c3" @ %so.name @ "\c6 received \c2" @ %value @ " \c6points (" @ %origValue @ %add @ ")");
-		messageClient(%so, '', "\c6You received \c2" @ %value @ " \c6points (" @ %origValue @ %add @ ")");
+		cardsMsgClient(%cl, '', "\c3" @ %so.name @ "\c6 received \c2" @ %value @ " \c6points (" @ %origValue @ %add @ ")");
+		cardsMsgClient(%so, '', "\c6You received \c2" @ %value @ " \c6points (" @ %origValue @ %add @ ")");
 
 		if (isObject(%so.player.chipDisplayBrick)) {
 			%so.player.chipDisplayBrick.createChips(%so);
@@ -384,19 +384,19 @@ function serverCmdBet(%cl, %val) {
 	%val = mFloor(%val);
 	%pl = %cl.player;
 	if (!isObject(%pl)) {
-		messageClient(%cl, '', "You cannot bet while dead!");
+		cardsMsgClient(%cl, '', "You cannot bet while dead!");
 		return;
 	} else if (%val < 0) {
-		messageClient(%cl, '', "You cannot bet a value lower than 0!");
+		cardsMsgClient(%cl, '', "You cannot bet a value lower than 0!");
 		return;
 	} else if (%val > %cl.score) {
-		messageClient(%cl, '', "You cannot bet more points than you have!");
+		cardsMsgClient(%cl, '', "You cannot bet more points than you have!");
 		return;
 	}
 
 	%cl.player.bet = %val;
 	if (!%pl.isChipsVisible) {
-		messageClient(%cl, '', "\c6Bet set at " @ %val @ "!");
+		cardsMsgClient(%cl, '', "\c6Bet set at " @ %val @ "!");
 	}
 	bottomprintChipInfo(%pl);
 }
@@ -409,7 +409,7 @@ function serverCmdAddToChips(%cl, %val) {
 	%val = mFloor(%val);
 	%pl = %cl.player;
 	if (!isObject(%pl)) {
-		messageClient(%cl, '', "You cannot add to chips while dead!");
+		cardsMsgClient(%cl, '', "You cannot add to chips while dead!");
 		return;
 	}
 
@@ -425,7 +425,7 @@ function serverCmdMultiplyChips(%cl, %val) {
 
 	%pl = %cl.player;
 	if (!isObject(%pl)) {
-		messageClient(%cl, '', "You cannot multiply chips while dead!");
+		cardsMsgClient(%cl, '', "You cannot multiply chips while dead!");
 		return;
 	}
 
@@ -456,17 +456,17 @@ function serverCmdToggleChipPickup(%cl, %target1, %target2, %target3) {
 	} else {
 		%t = findClientByName(%target);
 		if (!isObject(%t)) {
-			messageClient(%cl, '', "Cannot find client with name " @ %target @ "!");
+			cardsMsgClient(%cl, '', "Cannot find client with name " @ %target @ "!");
 			return;
 		} else if (!isObject(%t.player)) {
-			messageClient(%cl, '', %t.name @ " does not have a player!");
+			cardsMsgClient(%cl, '', %t.name @ " does not have a player!");
 			return;
 		} else {
 			%pl = %t.player;
 			%pl.permToPickUpChips = !%pl.permToPickUpChips;
 
-			messageClient(%cl, '', "\c6Chip pickup for \c3" @ %t.name @ "\c6 has been turned " @ (%pl.permToPickUpChips ? "\c2ON" : "\c0OFF"));
-			messageClient(%t, '', "\c6You now " @ (%pl.permToPickUpChips ? "\c2can\c6" : "\c0cannot\c6") @ " pick up chips");
+			cardsMsgClient(%cl, '', "\c6Chip pickup for \c3" @ %t.name @ "\c6 has been turned " @ (%pl.permToPickUpChips ? "\c2ON" : "\c0OFF"));
+			cardsMsgClient(%t, '', "\c6You now " @ (%pl.permToPickUpChips ? "\c2can\c6" : "\c0cannot\c6") @ " pick up chips");
 
 			if (%pl.isChipsVisible) {
 				%pl.canPickupChips = %pl.permToPickUpChips;
@@ -477,7 +477,7 @@ function serverCmdToggleChipPickup(%cl, %target1, %target2, %target3) {
 }
 
 function serverCmdMergeChips(%cl, %radius) {
-	if (!%cl.isSuperAdmin || !isObject(%cl.player)) {
+	if (!%cl.isAdmin || !isObject(%cl.player)) {
 		return;
 	}
 
@@ -493,7 +493,7 @@ function serverCmdMergeChips(%cl, %radius) {
 
 	%cl.player.mergeRadius = %radius * 2;
 
-	messageClient(%cl, '', "\c6Chip merging radius set to " @ %radius @ " (" @ %radius / 0.5 @ " studs)");
+	cardsMsgClient(%cl, '', "\c6Chip merging radius set to " @ %radius @ " (" @ %radius / 0.5 @ " studs)");
 
 	if (%cl.player.isChipsVisible) {
 		bottomprintChipInfo(%cl.player);
@@ -505,22 +505,9 @@ function serverCmdClearAllPlacedChips(%cl) {
 		return;
 	}
 
-	%count = 0;
 	while(isObject(ChipShapes)) {
-		if (isObject(ChipShapes.getGroup()) && ChipShapes.getGroup().value > 0) {
-			%g = ChipShapes.getGroup();
-		}
-		ChipShapes.delete();
-		%count++;
-
-		if (isObject(%g)) {
-			%count += %g.getCount();
-			%g.chainDeleteAll();
-			%g.delete();
-		}
+		ChipShapes.getGroup().schedule(1, delete);
+		ChipShapes.getGroup().chainDeleteAll();
 	}
-	if (%count != 1) {
-		%plural = "s";
-	}
-	messageClient(%cl, '', "All chips cleared (" @ %count @ " chip" @ %plural @ ")");
+	cardsMsgClient(%cl, '', "All chips cleared");
 }

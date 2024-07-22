@@ -22,7 +22,7 @@ function Player::dealDeckCard(%pl) {
 	%deck = %pl.deckBrick.deck;
 
 	if (%deck.numCards <= 0) {
-		messageClient(%pl.client, '', "Your deck is out of cards!");
+		cardsMsgClient(%pl.client, '', "Your deck is out of cards!");
 		return;
 	}
 
@@ -68,13 +68,13 @@ function fxDTSBrick::toggleDeckBrick(%b, %cl) {
 	%pl = %cl.player;
 
 	if (isObject(%b.deckOwner) && %b.deckOwner != %pl) {
-		messageClient(%cl, '', "This deck is being used by someone else!");
+		cardsMsgClient(%cl, '', "This deck is being used by someone else!");
 	} else if (isObject(%b.deckOwner) && %b.deckOwner == %pl) {
-		messageClient(%cl, '', "\c6Your deck brick has been cleared!");
+		cardsMsgClient(%cl, '', "\c6Your deck brick has been cleared!");
 		%b.deckOwner = "";
 		%pl.deckBrick = "";
 	} else if (!isObject(%b.deckOwner)) {
-		messageClient(%cl, '', "\c6Your deck brick has been set!");
+		cardsMsgClient(%cl, '', "\c6Your deck brick has been set!");
 		%b.deckOwner = %pl;
 		%pl.deckBrick = %b;
 	}
@@ -87,12 +87,12 @@ function fxDTSBrick::toggleDeckBrick(%b, %cl) {
 
 function fxDTSBrick::shuffleDeck(%b, %cl) {
 	if (!isObject(%b.deck) || %b.deck.numCards < 0) {
-		messageClient(%cl, '', "Cannot shuffle the deck - there is no cards!");
+		cardsMsgClient(%cl, '', "Cannot shuffle the deck - there is no cards!");
 		return;
 	}
 	%b.deck.shuffle();
 
-	messageClient(%cl, '', "\c6Deck shuffled! Total cards: " @ %b.deck.numCards);
+	cardsMsgClient(%cl, '', "\c6Deck shuffled! Total cards: " @ %b.deck.numCards);
 }
 
 function fxDTSBrick::setDeckCount(%b, %num, %cl) {
@@ -101,13 +101,13 @@ function fxDTSBrick::setDeckCount(%b, %num, %cl) {
 	}
 	%b.deck = getNewDeck(%num);
 
-	messageClient(%cl, '', "\c6Deck reset! Total cards: " @ %num * 52);
+	cardsMsgClient(%cl, '', "\c6Deck reset! Total cards: " @ %num * 52);
 }
 
 function GameConnection::setDeckCount(%cl, %num, %cl2) {
 	%b = %cl.player.deckBrick;
 	if (!isObject(%b)) {
-		messageClient(%cl, '', "You don't have a deck brick!");
+		cardsMsgClient(%cl, '', "You don't have a deck brick!");
 		return;
 	}
 	if (isObject(%b.deck)) {
@@ -115,7 +115,7 @@ function GameConnection::setDeckCount(%cl, %num, %cl2) {
 	}
 	%b.deck = getNewDeck(%num);
 
-	messageClient(%cl, '', "\c6Deck reset! Total cards: " @ %num * 52);
+	cardsMsgClient(%cl, '', "\c6Deck reset! Total cards: " @ %num * 52);
 
 	%b.setColorFx(3);
 	%b.schedule(100, setColorFx, %origFX);
@@ -177,7 +177,7 @@ function Player::placeDeckCard(%pl) {
 		return 0;
 	} else if (%hit.getClassName() $= "Player" && isObject(%hit.client)) {
 		%hit.addCard(%deck.removeCard(0));
-		messageClient(%pl.client, '', "\c6You gave \c3" @ %hit.client.name @ "\c6 a card");
+		cardsMsgClient(%pl.client, '', "\c6You gave \c3" @ %hit.client.name @ "\c6 a card");
 		return;
 	}
 

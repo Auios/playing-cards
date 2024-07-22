@@ -403,10 +403,9 @@ function Player::placeCurrentCard(%pl) {
 	%ray = containerRaycast(%s, %e, %masks, %pl);
 	%hitloc = getWords(%ray, 1, 3);
 
-	%angle = mACos(vectorDot(vectorNormalize(getWords(%ray, 4, 6)), "0 0 1"));
 	if (%hitloc $= "") {
 		return 0;
-	} else if (%angle > 0.05) {
+	} else if (getWords(%ray, 4, 6) !$= "0 0 1") {
 		return 0;
 	}
 
@@ -458,7 +457,7 @@ function placeCard(%pl, %pos, %card, %down) {
 
 function Player::pickUpCard(%pl, %cardShape) {
 	if (%pl.deck.numCards >= 13) {
-		messageClient(%pl.client, '', "You already have 13 cards!");
+		cardsMsgClient(%pl.client, '', "You already have 13 cards!");
 		return;
 	}
 	%card = %cardShape.card;
@@ -475,16 +474,16 @@ function deleteAllCards() {
 }
 
 function serverCmdClearAllCards(%cl) {
-	if (!%cl.isSuperAdmin) {
+	if (!%cl.isAdmin) {
 		return;
 	}
 
 	deleteAllCards();
-	messageClient(%cl, '', "\c6All cards deleted");
+	cardsMsgClient(%cl, '', "\c6All cards deleted");
 }
 
 function serverCmdClearAllCardData(%cl) {
-	if (!%cl.isSuperAdmin) {
+	if (!%cl.isAdmin) {
 		return;
 	}
 
@@ -496,5 +495,5 @@ function serverCmdClearAllCardData(%cl) {
 		}
 	}
 
-	messageClient(%cl, '', "\c6All cards and held cards deleted");
+	cardsMsgClient(%cl, '', "\c6All cards and held cards deleted");
 }
