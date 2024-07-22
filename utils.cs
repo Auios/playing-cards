@@ -9,20 +9,20 @@ function cardsMsgClient(%client, %code, %message) {
 	}
 }
 
-package MinScore {
-	function GameConnection::spawnPlayer(%cl) {
-		%ret = parent::spawnPlayer(%cl);
+// package MinScore {
+// 	function GameConnection::spawnPlayer(%cl) {
+// 		%ret = parent::spawnPlayer(%cl);
 
-		if (%cl.score <= 0 && getSimTime() - %cl.lastReceivedPoints > $FreeScoreTimeout) {
-			%cl.score = $MinimumScore;
-			cardsMsgClient(%cl, '', "\c2You received " @ $MinimumScore @ " free points for being broke (2 minute cooldown)");
-			%cl.lastReceivedPoints = getSimTime();
-		}
+// 		if (%cl.score <= 0 && getSimTime() - %cl.lastReceivedPoints > $FreeScoreTimeout) {
+// 			%cl.score = $MinimumScore;
+// 			cardsMsgClient(%cl, '', "\c2You received " @ $MinimumScore @ " free points for being broke (2 minute cooldown)");
+// 			%cl.lastReceivedPoints = getSimTime();
+// 		}
 
-		return %ret;
-	}
-};
-activatePackage(MinScore);
+// 		return %ret;
+// 	}
+// };
+// activatePackage(MinScore);
 
 function getIntList(%start, %end) {
 	while (%start < %end) {
