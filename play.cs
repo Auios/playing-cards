@@ -237,7 +237,7 @@ package PlayCards {
 					return parent::onTrigger(%this, %obj, %trig, %val);
 				}
 
-				%obj.client.score -= %obj.bet;
+				%obj.client.chips -= %obj.bet;
 				%obj.placeChips(%obj.bet, %hitloc);
 				%obj.bet = "";
 

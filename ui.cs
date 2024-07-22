@@ -68,7 +68,7 @@ function bottomprintChipInfo(%pl) {
 	if (%pl.isChipsVisible && %pl.bet> 0) {
 		%line0 = "<just:left>\c3Left Click\c6: Place down bet<just:right>\c3Right Click\c6: Cancel <br>";
 		%line1 = "<just:center>\c6Current bet: \c3" @ %pl.bet @ " <br>";
-		%line2 = "<just:center>\c6Total Points: \c2" @ %cl.score;
+		%line2 = "<just:center>\c6Total Chips: \c2" @ %cl.chips;
 	} else if (%pl.isChipsVisible) {
 		if (%pl.canPickupChips) {
 			%line0 = "<just:right>\c3Right Click\c6: Pick up chips <br>";
@@ -83,7 +83,7 @@ function bottomprintChipInfo(%pl) {
 			%line0 = "<just:left>\c3Left Click\c6: Merge overlapping chips " @ %radius @ %line0;
 		}
 		%line1 = "<just:center>\c3/bet #\c6 to prepare a bet <br>";
-		%line2 = "<just:center>\c6Total Points: \c2" @ %cl.score;
+		%line2 = "<just:center>\c6Total Chips: \c2" @ %cl.chips;
 	}
 
 	%cl.bottomprint(%line0 @ %line1 @ %line2, -1, 1);

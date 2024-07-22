@@ -1,5 +1,5 @@
-$MinimumScore = 10;
-$FreeScoreTimeout = 120000;
+$MinimumChips = 1000;
+$FreeChipsTimeout = 120000;
 
 function cardsMsgClient(%client, %code, %message) {
 	if(%code==0 && getTaggedString(%code) !$= "") {
@@ -9,20 +9,20 @@ function cardsMsgClient(%client, %code, %message) {
 	}
 }
 
-// package MinScore {
-// 	function GameConnection::spawnPlayer(%cl) {
-// 		%ret = parent::spawnPlayer(%cl);
+package MinChips {
+	function GameConnection::spawnPlayer(%cl) {
+		%ret = parent::spawnPlayer(%cl);
 
-// 		if (%cl.score <= 0 && getSimTime() - %cl.lastReceivedPoints > $FreeScoreTimeout) {
-// 			%cl.score = $MinimumScore;
-// 			cardsMsgClient(%cl, '', "\c2You received " @ $MinimumScore @ " free points for being broke (2 minute cooldown)");
-// 			%cl.lastReceivedPoints = getSimTime();
-// 		}
+		if (%cl.chips <= 0 && getSimTime() - %cl.lastReceivedChips > $FreeChipsTimeout) {
+			%cl.chips = $MinimumChips;
+			cardsMsgClient(%cl, '', "\c2You received " @ $MinimumChips @ " free chips for being broke (2 minute cooldown)");
+			%cl.lastReceivedChips = getSimTime();
+		}
 
-// 		return %ret;
-// 	}
-// };
-// activatePackage(MinScore);
+		return %ret;
+	}
+};
+activatePackage(MinChips);
 
 function getIntList(%start, %end) {
 	while (%start < %end) {

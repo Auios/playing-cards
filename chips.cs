@@ -76,7 +76,7 @@ function fxDTSBrick::createChips(%b, %cl) {
 		return;
 	}
 
-	%value = %cl.score;
+	%value = %cl.chips;
 	if (%value <= 0) {
 		%b.clearChips();
 		return;
@@ -153,8 +153,8 @@ function fxDTSBrick::toggleChipDisplay(%b, %cl) {
 	} else if (%b.isDisplayingChips) {
 		cardsMsgClient(%cl, '', "This chip display is in use!");
 		return;
-	} else if (%cl.score <= 0) {
-		cardsMsgClient(%cl, '', "You don't have any points to display!");
+	} else if (%cl.chips <= 0) {
+		cardsMsgClient(%cl, '', "You don't have any chips to display!");
 		return;
 	} else if (isObject(%cl.player.chipDisplayBrick)) {
 		%cl.player.chipDisplayBrick.clearChips(%cl);
@@ -250,7 +250,7 @@ function pickUpChips(%chip, %cl) {
 
 	%value = %g.value;
 
-	%cl.score += %value;
+	%cl.chips += %value;
 
 	if (isObject(%cl.player.chipDisplayBrick)) {
 		%cl.player.chipDisplayBrick.createChips(%cl);
@@ -293,9 +293,9 @@ function addToChips(%chip, %value, %cl) {
 	if (!isObject(%so)) {
 		%cl.player.placeChips(%value, %loc);
 	} else {
-		%so.score += %value;
-		cardsMsgClient(%cl, '', "\c3" @ %so.name @ "\c6 received \c2" @ %value @ " \c6points (" @ %origValue @ %add @ ")");
-		cardsMsgClient(%so, '', "\c6You received \c2" @ %value @ " \c6points (" @ %origValue @ %add @ ")");
+		%so.chips += %value;
+		cardsMsgClient(%cl, '', "\c3" @ %so.name @ "\c6 received \c2" @ %value @ " \c6chips (" @ %origValue @ %add @ ")");
+		cardsMsgClient(%so, '', "\c6You received \c2" @ %value @ " \c6chips (" @ %origValue @ %add @ ")");
 
 		if (isObject(%so.player.chipDisplayBrick)) {
 			%so.player.chipDisplayBrick.createChips(%so);
@@ -389,8 +389,8 @@ function serverCmdBet(%cl, %val) {
 	} else if (%val < 0) {
 		cardsMsgClient(%cl, '', "You cannot bet a value lower than 0!");
 		return;
-	} else if (%val > %cl.score) {
-		cardsMsgClient(%cl, '', "You cannot bet more points than you have!");
+	} else if (%val > %cl.chips) {
+		cardsMsgClient(%cl, '', "You cannot bet more chips than you have!");
 		return;
 	}
 
